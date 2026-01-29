@@ -16,19 +16,33 @@
       text-align: center;
     }
 
-    #content {
-      max-width: 600px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
     a {
       color: #9ad;
       text-decoration: none;
       display: block;
       margin: 0.5rem 0;
+    }
+    
+    .sparkle {
+  margin-top: 1rem;
+  width: 120px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+    .sparkle {
+  margin: 1rem auto;
+  opacity: 0.85;
+  pointer-events: none;
+  filter: saturate(1.2);
+}
+
+    .sparkle {
+  transform: rotate(4deg) scale(1.05);
+}
+
+
+    .hidden {
+      display: none;
     }
 
     .hint {
@@ -40,17 +54,33 @@
 </head>
 <body>
 
-  <!-- Certains mots ouvrent des portes. -->
+  <!-- Certains mots ouvrent des portes. Escape les referme. -->
 
-  <div id="content">
-    <p>Il n’y a rien ici.</p>
-    <p class="hint">Tape quelque chose.</p>
+  <div id="home">
+    <p>Il n’y a rien ici...</p><br>
+    <p>à part ça...</p>
+    <br>
+    <!-- Le gif n'aide pas. Il est juste là. -->
+
+    <div class="sparkle">
+      <div class="tenor-gif-embed"
+      data-postid="12687036694266530491"
+      data-share-method="host"
+      data-aspect-ratio="1"
+      data-width="120px">
+      </div>
+    </div>
+    <br>
+    <p class="hint">A moins que tu ne saches ce que tu veux ?</p>
   </div>
 
   <div id="vlogs" class="hidden">
     <h2>Vlogs</h2>
     <a href="https://youtu.be/JX_HqpouIwM" target="_blank">Vlog Paris</a>
+    <iframe width="1477" height="541" src="https://www.youtube.com/embed/JX_HqpouIwM" title="Vlog Paris" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <br>
     <a href="https://youtu.be/410_62GwiBg" target="_blank">Vlog Londres</a>
+    <iframe width="1477" height="541" src="https://www.youtube.com/embed/410_62GwiBg" title="Un paff british (Vlog Londres)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
 
   <div id="covers" class="hidden">
@@ -58,36 +88,54 @@
     <a href="https://tadoniji.fr/listen" target="_blank">Désolé, j'ai pas encore posté de covers, check ça en attendant !</a>
   </div>
 
+  <div id="other" class="hidden">
+    <h2>Autres trucs</h2>
+    <a href="https://Regarde-je-suis-un-lien-trop-mignon.lol" target="_blank">Projet random en cours</a>
+    <a href="https://youtu.be/410_62GwiBg?t=96" target="_blank">Un autre truc random toujours pas là</a>
+  </div>
+
   <script>
     let typed = "";
 
-    const content = document.getElementById("content");
-    const vlogs = document.getElementById("vlogs");
-    const covers = document.getElementById("covers");
+    const home = document.getElementById("home");
+    const sections = {
+      vlog: document.getElementById("vlogs"),
+      covers: document.getElementById("covers"),
+      other: document.getElementById("other")
+    };
+
+    function show(section) {
+      home.style.display = "none";
+      Object.values(sections).forEach(s => s.classList.add("hidden"));
+      sections[section].classList.remove("hidden");
+    }
 
     function reset() {
-      content.style.display = "none";
-      vlogs.classList.add("hidden");
-      covers.classList.add("hidden");
+      typed = "";
+      home.style.display = "block";
+      Object.values(sections).forEach(s => s.classList.add("hidden"));
     }
 
     document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        reset();
+        return;
+      }
+
       if (e.key.length === 1) {
         typed += e.key.toLowerCase();
-        typed = typed.slice(-20); // limite mémoire
+        typed = typed.slice(-20);
       }
 
-      if (typed.includes("vlog")) {
-        reset();
-        vlogs.classList.remove("hidden");
-      }
-
-      if (typed.includes("covers")) {
-        reset();
-        covers.classList.remove("hidden");
-      }
+      Object.keys(sections).forEach(word => {
+        if (typed.includes(word)) {
+          show(word);
+        }
+      });
     });
+    
   </script>
+  <script async src="https://tenor.com/embed.js"></script>
 
 </body>
 </html>
