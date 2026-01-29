@@ -2,24 +2,33 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Nothing here</title>
+  <title>You see...</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       background: #111;
       color: #eee;
       font-family: system-ui, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      cursor: pointer;
     }
 
-    #secret {
-      display: none;
+    #content {
       max-width: 600px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    a {
+      color: #9ad;
+      text-decoration: none;
+      display: block;
+      margin: 0.5rem 0;
     }
 
     .hint {
@@ -31,47 +40,51 @@
 </head>
 <body>
 
-  <!-- Tu regardes au bon endroit. -->
+  <!-- Certains mots ouvrent des portes. -->
 
-  <div id="visible">
-    <div>
-      <p>Il n’y a rien ici.</p>
-      <p class="hint">Ou seulement ce que tu veux voir.</p>
-    </div>
+  <div id="content">
+    <p>Il n’y a rien ici.</p>
+    <p class="hint">Tape quelque chose.</p>
   </div>
 
-  <div id="secret">
-    <h1>Bien vu.</h1>
-    <p>
-      Ce site n’apparaît pas par hasard.<br>
-      Il faut chercher un peu.
-    </p>
-    <p>
-      (Et maintenant que tu es là, tu peux mettre ce que tu veux.)
-    </p>
+  <div id="vlogs" class="hidden">
+    <h2>Vlogs</h2>
+    <a href="https://youtu.be/JX_HqpouIwM" target="_blank">Vlog Paris</a>
+    <a href="https://youtu.be/410_62GwiBg" target="_blank">Vlog Londres</a>
+  </div>
+
+  <div id="covers" class="hidden">
+    <h2>Covers</h2>
+    <a href="https://tadoniji.fr/listen" target="_blank">Désolé, j'ai pas encore posté de covers, check ça en attendant !</a>
   </div>
 
   <script>
-    let clicks = 0;
-    const visible = document.getElementById("visible");
-    const secret = document.getElementById("secret");
+    let typed = "";
 
-    function reveal() {
-      visible.style.display = "none";
-      secret.style.display = "block";
-      document.body.style.cursor = "default";
+    const content = document.getElementById("content");
+    const vlogs = document.getElementById("vlogs");
+    const covers = document.getElementById("covers");
+
+    function reset() {
+      content.style.display = "none";
+      vlogs.classList.add("hidden");
+      covers.classList.add("hidden");
     }
 
-    document.body.addEventListener("click", () => {
-      clicks++;
-      if (clicks === 7) {
-        reveal();
-      }
-    });
-
     document.addEventListener("keydown", (e) => {
-      if (e.key.toLowerCase() === "s") {
-        reveal();
+      if (e.key.length === 1) {
+        typed += e.key.toLowerCase();
+        typed = typed.slice(-20); // limite mémoire
+      }
+
+      if (typed.includes("vlog")) {
+        reset();
+        vlogs.classList.remove("hidden");
+      }
+
+      if (typed.includes("covers")) {
+        reset();
+        covers.classList.remove("hidden");
       }
     });
   </script>
